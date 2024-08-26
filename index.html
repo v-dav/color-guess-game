@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Color Guess Game</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/b229e9ea70.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff4b1f, #1fddff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-block {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #rgb-color, #status {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #restart {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #restart:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 576px) {
+            .color-block {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container text-center">
+    <h1 class="mb-4"><i class="fas fa-palette"></i> Color Guess Game</h1>
+    <p id="rgb-color" class="lead">RGB(255, 0, 0)</p>
+    <p id="status" class="lead">Start Guessing!</p>
+    <button id="restart" class="mb-4"><i class="fas fa-redo"></i> Restart</button>
+    <div class="row justify-content-center">
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div1"></div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div2"></div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div3"></div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div4"></div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div5"></div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+            <div class="color-block" id="div6"></div>
+        </div>
+    </div>
+</div>
+<script>
+    const colorBlocks = document.querySelectorAll(".color-block");
+    start();
+
+    function generateListRandomColors() {
+        const listRgb = [];
+        for (let i = 0; i < 6; i++) {
+            const colorString = `rgb(${generateRandomColorCode()}, ${generateRandomColorCode()}, ${generateRandomColorCode()})`;
+            listRgb.push(colorString);
+        }
+        return listRgb;
+    }
+
+    function pickUpRandomColorFromList(listRgb) {
+        const index = Math.floor(Math.random() * (listRgb.length));
+        return listRgb[index];
+    }
+
+    function applyColorsToDivs(listRgb, colorBlocks) {
+        colorBlocks.forEach((block, index) => {
+            block.style.backgroundColor = listRgb[index];
+        })
+    }
+
+    function setRgbGuess(rgb) {
+        const guess = document.getElementById("rgb-color");
+        guess.innerText = rgb.toUpperCase();
+    }
+
+    function generateRandomColorCode() {
+        return String(Math.floor(Math.random() * 256));
+    }
+
+    function start() {
+        const listRgb = generateListRandomColors();
+        setRgbGuess(pickUpRandomColorFromList(listRgb));
+        applyColorsToDivs(listRgb, colorBlocks);
+        launchGame();
+    }
+
+    document.getElementById("restart").addEventListener("click", () => {
+        document.getElementById("status").innerText = "Start Guessing!";
+        colorBlocks.forEach(block => {
+            block.style.display = "inline-block";
+        })
+        start();
+    })
+
+    function launchGame() {
+        const guess = document.getElementById("rgb-color").innerText.toLowerCase();
+        const status = document.getElementById("status");
+
+        colorBlocks.forEach((block) => {
+            block.addEventListener("click", () => {
+                if (block.style.backgroundColor === guess) {
+                    colorBlocks.forEach(block => {
+                        block.style.backgroundColor = guess;
+                    });
+                    status.innerText = "Correct!";
+                } else {
+                    block.style.display = "none";
+                    status.innerText = "Try Again!";
+                }
+            })
+        })
+    }
+
+</script>
+</body>
+</html>
