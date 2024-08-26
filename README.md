@@ -1,12 +1,12 @@
 # 🎨 Color Guess Game
+![chrome-capture-2024-8-26](https://github.com/user-attachments/assets/0ed5dc82-8871-4183-b5e1-3c7f46aaf119)
 
-![Color Guess Game Demo](https://api.placeholder.com/400/320)
 
 A sleek, modern, and interactive color guessing game built with HTML, CSS, and JavaScript. Test your RGB color recognition skills in style!
 
 ## 🚀 Live Demo
 
-Check out the live demo [here](https://your-demo-link.com)!
+Check out the live demo [here](https://v-dav.github.io/color-guess-game/)
 
 ## ✨ Features
 
